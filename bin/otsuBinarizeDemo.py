@@ -1,7 +1,11 @@
+import sys
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
-img = cv2.imread('noisy2.png',0)
+
+print "reading", sys.argv[1]
+
+img = cv2.imread(sys.argv[1],0)
 # global thresholding
 ret1,th1 = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
 # Otsu's thresholding
@@ -23,4 +27,6 @@ for i in xrange(3):
     plt.title(titles[i*3+1]), plt.xticks([]), plt.yticks([])
     plt.subplot(3,3,i*3+3),plt.imshow(images[i*3+2],'gray')
     plt.title(titles[i*3+2]), plt.xticks([]), plt.yticks([])
+    
+print "showing"
 plt.show()
