@@ -9,6 +9,19 @@ end
 # Base configuration recipe in Chef.
 package "wget"
 package "ntp"
+package "python-pyocr"
+package "libtesseract-dev"
+package "python3"
+package "python-pip"
+package "python-imaging"
+package "libcv-dev"
+package "python-opencv"
+
+
+execute 'pyPillow' do
+  command 'pip install pillow'
+end
+
 cookbook_file "ntp.conf" do
   path "/etc/ntp.conf"
 end
