@@ -16,6 +16,7 @@ package "python-pip"
 package "python-imaging"
 package "libcv-dev"
 package "python-opencv"
+package "imagemagick"
 
 
 execute 'pyPillow' do
