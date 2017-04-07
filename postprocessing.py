@@ -13,7 +13,11 @@ if len(tools) == 0:
 tool = tools[0]
 print("Will use tool '%s'" % (tool.get_name()))
 
+#TODO --load_system_dawg =0
+
 img = Image.open(sys.argv[1])
+
+#Using english
 line_and_word_boxes = tool.image_to_string(
     img, lang="eng",
     builder=pyocr.builders.LineBoxBuilder()
@@ -41,28 +45,36 @@ lines=[]
 
 print "grouping"
 for t in ysort:
-    print "e=",abs(t.position[0][1] -curY)
     if abs(t.position[0][1] -curY) < errorMargin:
         curLine = curLine+" "+t.content
-        print curLine
     else:
-        print "\n"
         lines.append( (curY,curLine))
         curY=t.position[0][1]
         curLine=t.content
 
 for l in lines:
     print l
-
-    itemLineRegex =r'([A-z ]*)[ ]* ([0-9]*)[ ]*[$]*[ ]*([0-9]*)[\.]([0-9]*)'
-    searchObj = re.search( itemLineRegex, l[1], re.M|re.I)
-
-    if searchObj:
-        print "searchObj.group():", searchObj.group()
-        print "Item label:", searchObj.group(1)
-        print "SKU (optional):", searchObj.group(2)
-        print "Dollars: ", searchObj.group(3)
-        print "Cents : ", searchObj.group(4)
+    priceRegex= r'[$]*[ ]*([0-9]*)[\.]*([0-9]*)'
+    itemLineRegex =r'([A-z ]*)[ ]* ([0-9]*)[ ]*[$]*[ ]*([0-9]*)[\.]*([0-9]*)'
+    unitLineRegex =r'([0-9]+)([l1]*b|kg|L) @ ([0-9]*)[\.]*([0-9]*)/[l1]*b [$]*[ ]*([0-9]*)[\.]*([0-9]*)'
+    
+    
+    searchUnit = re.search( unitLineRegex, l[1], re.M|re.I)
+    searchItem = re.search( itemLineRegex, l[1], re.M|re.I)
+    if searchUnit:
+        print "searchObj.group():", searchItem.group()
+        print "Unit quantity:", searchItem.group(0)
+        print "Units:", searchItem.group(1)
+        print "Unit Dollars: ", searchItem.group(2)
+        print "Unit Cents : ", searchItem.group(3)
+        print "Total Dollars: ", searchItem.group(4)
+        print "Total Cents : ", searchItem.group(5)
+    elif searchItem:
+        print "searchObj.group():", searchItem.group()
+        print "Item label:", searchItem.group(1)
+        print "SKU (optional):", searchItem.group(2)
+        print "Dollars: ", searchItem.group(3)
+        print "Cents : ", searchItem.group(4)
     else:
         print "Nothing found!!"
 
