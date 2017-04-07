@@ -16,6 +16,7 @@ print("Will use tool '%s'" % (tool.get_name()))
 #TODO --load_system_dawg =0  #Disables dictionary matching
 
 img = Image.open(sys.argv[1])
+print "Read Image ",sys.argv[1]
 
 #Using english
 line_and_word_boxes = tool.image_to_string(
