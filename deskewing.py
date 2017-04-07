@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import sys
 
+
+#Adapted from http://www.pyimagesearch.com/2017/02/20/text-skew-correction-opencv-python/
 img = cv2.imread(sys.argv[1], cv2.IMREAD_GRAYSCALE)
 img_rows, img_cols = img.shape
 center = (img_cols/2,img_rows/2)
