@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
+import sys
 
-img = cv2.imread('m20.jpg', cv2.IMREAD_GRAYSCALE)
+img = cv2.imread(sys.argv[1], cv2.IMREAD_GRAYSCALE)
 img_rows, img_cols = img.shape
 center = (img_cols/2,img_rows/2)
 smoothedImg = cv2.medianBlur(img,3)
