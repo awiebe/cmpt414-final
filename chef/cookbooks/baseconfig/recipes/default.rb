@@ -17,10 +17,13 @@ package "python-imaging"
 package "libcv-dev"
 package "python-opencv"
 package "imagemagick"
+packege "python-tk"
 
 
 execute 'pyPillow' do
   command 'pip install pillow'
+  command 'pip install matplotlib'
+
 end
 
 cookbook_file "ntp.conf" do
