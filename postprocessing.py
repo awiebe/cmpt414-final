@@ -13,7 +13,7 @@ if len(tools) == 0:
 tool = tools[0]
 print("Will use tool '%s'" % (tool.get_name()))
 
-#TODO --load_system_dawg =0
+#TODO --load_system_dawg =0  #Disables dictionary matching
 
 img = Image.open(sys.argv[1])
 
@@ -56,19 +56,22 @@ for l in lines:
     print l
     priceRegex= r'[$]*[ ]*([0-9]*)[\.]*([0-9]*)'
     itemLineRegex =r'([A-z ]*)[ ]* ([0-9]*)[ ]*[$]*[ ]*([0-9]*)[\.]*([0-9]*)'
-    unitLineRegex =r'([0-9]+)([l1]*b|kg|L) @ ([0-9]*)[\.]*([0-9]*)/[l1]*b [$]*[ ]*([0-9]*)[\.]*([0-9]*)'
+    unitLineRegex =r'([0-9]+)([lbgkgLmL]+) @ ([0-9]*)[\.]*([0-9]*)/[lbgkgLmL]* [$]*[ ]*([0-9]*)[\.]*([0-9]*)'
     
-    
-    searchUnit = re.search( unitLineRegex, l[1], re.M|re.I)
-    searchItem = re.search( itemLineRegex, l[1], re.M|re.I)
+    #Tesserect can't distinguish between 1 and L very well. so sanitize the pounds unit
+    tesseractSantized = l[1].replace("1b","lb")
+
+    searchUnit = re.search( unitLineRegex,tesseractSantized , re.M|re.I)
+    searchItem = re.search( itemLineRegex, tesseractSantized, re.M|re.I)
     if searchUnit:
+        
         print "searchObj.group():", searchItem.group()
-        print "Unit quantity:", searchItem.group(0)
-        print "Units:", searchItem.group(1)
+        print "Unit quantity:", searchItem.group(1)
+        print "Units:", searchItem.group(2)
         print "Unit Dollars: ", searchItem.group(2)
         print "Unit Cents : ", searchItem.group(3)
         print "Total Dollars: ", searchItem.group(4)
-        print "Total Cents : ", searchItem.group(5)
+        #print "Total Cents : ", searchItem.group(5)
     elif searchItem:
         print "searchObj.group():", searchItem.group()
         print "Item label:", searchItem.group(1)
